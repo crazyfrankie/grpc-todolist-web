@@ -111,48 +111,108 @@ const handleCreateTask = async () => {
 
 <style scoped lang="scss">
 @import '@/assets/scss/_variables.scss';
+
+// Add these new styles at the top of your style section
 .app-header {
   background: white;
-  padding: $spacing-md;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: $spacing-md $spacing-lg;
+  box-shadow: $box-shadow-sm;
+  margin-bottom: $spacing-lg;
 
   .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+
+      .username {
+        cursor: pointer;
+        color: $primary-color;
+        font-weight: 500;
+        padding: $spacing-sm;
+        border-radius: $input-radius;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+        }
+      }
+    }
   }
 
-  .user-section {
+  .auth-buttons {
     display: flex;
-    align-items: center;
     gap: $spacing-md;
+    justify-content: center;
 
-    .username {
-      cursor: pointer;
-      &:hover {
-        color: $primary-color;
-        text-decoration: underline;
+    button {
+      min-width: 100px;
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: $spacing-lg;
+
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: $box-shadow-md;
+    animation: slideDown 0.3s ease;
+
+    h3 {
+      margin-bottom: 1.5rem;
+      color: $primary-color;
+      font-size: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      input, textarea {
+        background: #f8f9fa;
+        
+        &:focus {
+          background: #fff;
+        }
+      }
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: $spacing-md;
+      justify-content: flex-end;
+      margin-top: $spacing-lg;
+
+      button {
+        min-width: 120px;
+        height: 44px;
       }
     }
   }
 }
 
-.main-content {
-  padding: $spacing-lg 0;
-
-  .task-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: $spacing-lg;
-  }
-}
-
-.login-prompt {
-  text-align: center;
-  padding: 100px 0;
-  animation: fadeIn 0.5s;
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 </style>

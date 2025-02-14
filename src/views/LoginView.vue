@@ -68,50 +68,64 @@ const handleLogin = async () => {
 
 <style scoped lang="scss">
 @import '@/assets/scss/_variables.scss';
+
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background: linear-gradient(135deg, $primary-color, $secondary-color);
+  padding: $spacing-lg;
 }
 
 .auth-card {
   background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: $box-shadow-md;
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
   animation: slideUp 0.5s ease;
 
   h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     color: $primary-color;
+    font-size: 28px;
+    font-weight: 600;
   }
 
-  .error-message {
-    color: $danger-color;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
+  .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
 
-  .auth-footer {
-    margin-top: 1rem;
-    text-align: center;
-    a {
-      color: $primary-color;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
+    label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    input {
+      font-size: 16px;
+      
+      &:focus + label {
+        animation: floatLabel 0.3s ease forwards;
       }
     }
   }
-}
 
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  .btn-primary {
+    width: 100%;
+    height: $input-height;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: $spacing-lg;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $box-shadow-sm;
+    }
+  }
 }
 </style>

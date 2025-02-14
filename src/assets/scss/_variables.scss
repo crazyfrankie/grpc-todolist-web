@@ -14,3 +14,16 @@ $spacing-lg: 24px;
 $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
+
+// 输入框样式
+$input-border-color: #e0e0e0;
+$input-focus-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+$input-height: 48px;
+$input-radius: 8px;
+$input-padding: 12px 16px;
+$input-font-size: 16px;
+$input-transition: all 0.3s ease;
+
+// 阴影效果
+$box-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$box-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);

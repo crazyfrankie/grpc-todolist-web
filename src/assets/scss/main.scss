@@ -43,27 +43,46 @@ body {
 }
 
 .form-group {
-  margin-bottom: $spacing-md;
+  margin-bottom: $spacing-lg;
 
   label {
     display: block;
     margin-bottom: $spacing-sm;
+    font-weight: 500;
+    color: #333;
   }
 
   input, textarea {
     width: 100%;
-    padding: $spacing-sm;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    height: $input-height;
+    padding: $input-padding;
+    font-size: $input-font-size;
+    border: 2px solid $input-border-color;
+    border-radius: $input-radius;
+    background: #fff;
+    transition: $input-transition;
 
     &:focus {
+      outline: none;
       border-color: $primary-color;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      box-shadow: $input-focus-shadow;
     }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+// 添加输入框动画效果
+@keyframes floatLabel {
+  from { transform: translateY(0); opacity: 0; }
+  to { transform: translateY(-20px); opacity: 1; }
 }
