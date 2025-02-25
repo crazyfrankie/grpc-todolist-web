@@ -54,7 +54,7 @@ export default createStore<State>({
       }
     },
 
-    async fetchUserInfo({ commit }) {
+    async fetchUserInfo({ commit, state }) {
       try {
         const response = await authApi.getUserInfo({user_id: state.user.id})
         const userData = {
@@ -96,22 +96,22 @@ export default createStore<State>({
       }
     },
 
-    async createTask({ dispatch }, taskData) {
+    async createTask({ dispatch, state }, taskData) {
       await taskApi.addTask({title:taskData.title, content:taskData.content, user_id: state.user.id})
       await dispatch('fetchTasks')
     },
 
-    async updateTask({ dispatch }, { id, newData }) {
+    async updateTask({ dispatch, state }, { id, newData }) {
       await taskApi.updateTask({ id: id, ...newData, user_id:state.user.id })
       await dispatch('fetchTasks')
     },
 
-    async deleteTask({ dispatch }, id: number) {
+    async deleteTask({ dispatch, state }, id: number) {
       await taskApi.deleteTask({ id: id,user_id:state.user.id })
       await dispatch('fetchTasks')
     },
 
-    async restoreTask({ dispatch }, id: number) {
+    async restoreTask({ dispatch, state }, id: number) {
       await taskApi.restoreTask({ id: id,user_id:state.user.id})
       await dispatch('fetchRecycledTasks')
     },
