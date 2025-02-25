@@ -22,7 +22,7 @@ const saveEdit = async () => {
     }
     
     await store.dispatch('updateTask', {
-      taskId: props.task.id,
+      id: props.task.id,
       newData
     })
     isEditing.value = false

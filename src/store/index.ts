@@ -35,14 +35,6 @@ export default createStore<State>({
     }
   },
   actions: {
-    // async initialize({ commit }) {
-    //   const user = localStorage.getItem('user')
-    //   if (user) {
-    //     commit('SET_USER', JSON.parse(user))
-    //     await this.dispatch('fetchTasks')
-    //   }
-    // },
-
     async login({ commit }, { name, password }) {
       try {
         const response = await authApi.login({ name, password })
@@ -64,7 +56,7 @@ export default createStore<State>({
 
     async fetchUserInfo({ commit }) {
       try {
-        const response = await authApi.getUserInfo()
+        const response = await authApi.getUserInfo({user_id: state.user.id})
         const userData = {
           id: response.data.user.id,
           name: response.data.user.name
@@ -78,7 +70,7 @@ export default createStore<State>({
 
     async fetchTasks({ commit, state }) {
       if (state.user?.id) {
-        const response = await taskApi.fetchTasks()
+        const response = await taskApi.fetchTasks({user_id: state.user.id})
         const tasks = response.data.tasks.map((task: any) => ({
           id: task.id,
           title: task.title,
@@ -92,7 +84,7 @@ export default createStore<State>({
 
     async fetchRecycledTasks({ commit, state }) {
       if (state.user?.id) {
-        const response = await taskApi.recycleBin()
+        const response = await taskApi.recycleBin({user_id: state.user.id})
         const tasks = response.data.tasks.map((task: any) => ({
           id: task.id,
           title: task.title,
@@ -105,28 +97,23 @@ export default createStore<State>({
     },
 
     async createTask({ dispatch }, taskData) {
-      await taskApi.addTask(taskData)
+      await taskApi.addTask({title:taskData.title, content:taskData.content, user_id: state.user.id})
       await dispatch('fetchTasks')
     },
 
     async updateTask({ dispatch }, { id, newData }) {
-      await taskApi.updateTask({ id: id, ...newData })
+      await taskApi.updateTask({ id: id, ...newData, user_id:state.user.id })
       await dispatch('fetchTasks')
     },
 
     async deleteTask({ dispatch }, id: number) {
-      await taskApi.deleteTask({ id: id })
+      await taskApi.deleteTask({ id: id,user_id:state.user.id })
       await dispatch('fetchTasks')
     },
 
     async restoreTask({ dispatch }, id: number) {
-      await taskApi.restoreTask({ id: id})
+      await taskApi.restoreTask({ id: id,user_id:state.user.id})
       await dispatch('fetchRecycledTasks')
     },
-
-    // async permanentDelete({ dispatch }, taskId) {
-    //   await taskApi.permanentDelete(taskId)
-    //   await dispatch('fetchRecycledTasks')
-    // }
   }
 })

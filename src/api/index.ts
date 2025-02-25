@@ -6,12 +6,12 @@ const api = axios.create({
 })
 
 export const taskApi = {
-  addTask: (data: {title: string, content: string}) => api.post(`/tasks/add`, data),
-  updateTask: (data: {id: number, title: string, content: string}) => api.post(`/tasks/update`, data),
-  deleteTask: (data: {id: number}) => api.post(`/tasks/delete`, data),
-  restoreTask: (data: {id: number}) => api.post(`/tasks/restore`, data),
-  fetchTasks: () => api.get(`/tasks`),
-  recycleBin: () => api.get(`/tasks/recycle`),
+  addTask: (data: {title: string, content: string,user_id: number}) => api.post(`/tasks/add`, data),
+  updateTask: (data: {id: number, title: string, content: string,user_id: number}) => api.post(`/tasks/update`, data),
+  deleteTask: (data: {id: number,user_id: number}) => api.post(`/tasks/delete`, data),
+  restoreTask: (data: {id: number,user_id: number}) => api.post(`/tasks/restore`, data),
+  fetchTasks: (params) => api.get(`/tasks/${params.user_id}`),
+  recycleBin: (params) => api.get(`/tasks/recycle/${params.user_id}`),
 }
 
 export const authApi = {
@@ -19,7 +19,7 @@ export const authApi = {
     api.post('/user/login', data),
   register: (data: { name: string; password: string }) => 
     api.post('/user/register', data),
-  getUserInfo: () => api.get('/user')
+  getUserInfo: (params) => api.get(`/user/${params.user_id}`)
 }
 
 // 请求拦截器
