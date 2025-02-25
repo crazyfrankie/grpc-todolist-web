@@ -38,7 +38,7 @@ export default createStore<State>({
     async login({ commit }, { name, password }) {
       try {
         const response = await authApi.login({ name, password })
-        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('token', response.token)
         await this.dispatch('fetchUserInfo')
       } catch (error) {
         throw new Error('登录失败')
@@ -57,7 +57,7 @@ export default createStore<State>({
     async fetchUserInfo({ commit, state }) {
       try {
         if (state.user?.id) {
-          const response = await authApi.getUserInfo({user_id: state.user?.id})
+          const response = await authApi.getUserInfo()
           const userData = {
             id: response.data.user.id,
             name: response.data.user.name

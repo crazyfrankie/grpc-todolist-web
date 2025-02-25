@@ -19,7 +19,7 @@ export const authApi = {
     api.post('/user/login', data),
   register: (data: { name: string; password: string }) => 
     api.post('/user/register', data),
-  getUserInfo: (params: {user_id: number}) => api.get(`/user/${params.user_id}`)
+  getUserInfo: () => api.get(`/user`)
 }
 
 // 请求拦截器
