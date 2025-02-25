@@ -56,13 +56,15 @@ export default createStore<State>({
 
     async fetchUserInfo({ commit, state }) {
       try {
-        const response = await authApi.getUserInfo({user_id: state.user.id})
-        const userData = {
-          id: response.data.user.id,
-          name: response.data.user.name
+        if (state.user?.id) {
+          const response = await authApi.getUserInfo({user_id: state.user?.id})
+          const userData = {
+            id: response.data.user.id,
+            name: response.data.user.name
+          }
+          commit('SET_USER', userData)
+          return userData
         }
-        commit('SET_USER', userData)
-        return userData
       } catch (error) {
         throw new Error('获取用户信息失败')
       }
@@ -70,7 +72,7 @@ export default createStore<State>({
 
     async fetchTasks({ commit, state }) {
       if (state.user?.id) {
-        const response = await taskApi.fetchTasks({user_id: state.user.id})
+        const response = await taskApi.fetchTasks({user_id: state.user?.id})
         const tasks = response.data.tasks.map((task: any) => ({
           id: task.id,
           title: task.title,
@@ -84,7 +86,7 @@ export default createStore<State>({
 
     async fetchRecycledTasks({ commit, state }) {
       if (state.user?.id) {
-        const response = await taskApi.recycleBin({user_id: state.user.id})
+        const response = await taskApi.recycleBin({user_id: state.user?.id})
         const tasks = response.data.tasks.map((task: any) => ({
           id: task.id,
           title: task.title,
@@ -97,23 +99,31 @@ export default createStore<State>({
     },
 
     async createTask({ dispatch, state }, taskData) {
-      await taskApi.addTask({title:taskData.title, content:taskData.content, user_id: state.user.id})
-      await dispatch('fetchTasks')
+      if (state.user?.id) {
+        await taskApi.addTask({title:taskData.title, content:taskData.content, user_id: state.user?.id})
+        await dispatch('fetchTasks')
+      }
     },
 
     async updateTask({ dispatch, state }, { id, newData }) {
-      await taskApi.updateTask({ id: id, ...newData, user_id:state.user.id })
-      await dispatch('fetchTasks')
+      if (state.user?.id) {
+        await taskApi.updateTask({ id: id, ...newData, user_id: state.user?.id })
+        await dispatch('fetchTasks')
+      }
     },
 
     async deleteTask({ dispatch, state }, id: number) {
-      await taskApi.deleteTask({ id: id,user_id:state.user.id })
-      await dispatch('fetchTasks')
+      if (state.user?.id) {
+        await taskApi.deleteTask({ id: id, user_id: state.user?.id })
+        await dispatch('fetchTasks')
+      }
     },
 
     async restoreTask({ dispatch, state }, id: number) {
-      await taskApi.restoreTask({ id: id,user_id:state.user.id})
-      await dispatch('fetchRecycledTasks')
+      if (state.user?.id) {
+        await taskApi.restoreTask({ id: id, user_id: state.user?.id})
+        await dispatch('fetchRecycledTasks')
+      }
     },
   }
 })
