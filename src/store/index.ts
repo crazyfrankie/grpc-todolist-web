@@ -37,8 +37,7 @@ export default createStore<State>({
   actions: {
     async login({ commit }, { name, password }) {
       try {
-        const response = await authApi.login({ name, password })
-        document.cookie = `todolist_auth=${response.data.token}; path=/; httpOnly; secure; samesite=strict`
+        await authApi.login({ name, password })
         await this.dispatch('fetchUserInfo')
       } catch (error) {
         throw new Error('登录失败')
@@ -48,7 +47,7 @@ export default createStore<State>({
     async register({ dispatch }, { name, password }) {
       try {
         await authApi.register({ name, password })
-        await dispatch('login', { name, password })
+        await dispatch('register', { name, password })
       } catch (error) {
         throw new Error('注册失败')
       }
