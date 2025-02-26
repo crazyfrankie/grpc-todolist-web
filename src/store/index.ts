@@ -36,12 +36,8 @@ export default createStore<State>({
   },
   actions: {
     async login({ commit }, { name, password }) {
-      const loginResponse = await authApi.login({ name, password })
-      if (loginResponse.data.code === 200) {
-        // 登录成功后立即获取用户信息
-        await this.dispatch('fetchUserInfo')
-        return true
-      }
+      await authApi.login({ name, password })
+      await this.dispatch('fetchUserInfo')
     },
 
     async register({ dispatch }, { name, password }) {
@@ -61,7 +57,7 @@ export default createStore<State>({
             name: response.data.user.name
           }
           commit('SET_USER', userData)
-          return userData
+          return userData 
       } catch (error) {
         throw new Error('获取用户信息失败')
       }
