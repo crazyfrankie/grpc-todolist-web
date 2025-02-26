@@ -36,12 +36,13 @@ export default createStore<State>({
   },
   actions: {
     async login({ commit }, { name, password }) {
+      const response = await authApi.login({ name, password })
+      // 修改这里，确保等待获取用户信息完成
       try {
-        const response = await authApi.login({ name, password })
-        // Wait for user info to be fetched after successful login
-        await this.dispatch('fetchUserInfo')
-        return response // Return response to handle navigation in component
+        await this.dispatch('fetchUserInfo')  // 等待获取用户信息
+        return response
       } catch (error) {
+        console.error('Failed to fetch user info:', error)
         throw error
       }
     },

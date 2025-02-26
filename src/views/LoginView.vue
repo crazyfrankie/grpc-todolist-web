@@ -31,7 +31,8 @@ const handleLogin = async () => {
       name: form.value.name,
       password: form.value.password
     })
-    router.push('/')
+    // 使用 router.replace 而不是 router.push
+    router.replace('/vue/')  // 确保使用正确的路径前缀
   } catch (error) {
     errorMessage.value = '登录失败，请检查凭证'
   }
