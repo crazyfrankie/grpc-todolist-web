@@ -21,13 +21,18 @@ router.beforeEach((to, from, next) => {
   const store = useStore()
   const isAuthenticated = !!store.state.user?.id
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login')
-  } else if (to.meta.guestOnly && isAuthenticated) {
-    next('/')
-  } else {
-    next()
+  if (to.meta.guestOnly && isAuthenticated) {
+    next('/vue/')
+    return
   }
+
+  // Redirect unauthenticated users to login
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next('/vue/login')
+    return
+  }
+
+  next()
 })
 
 export default router

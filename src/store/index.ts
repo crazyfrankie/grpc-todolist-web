@@ -36,8 +36,14 @@ export default createStore<State>({
   },
   actions: {
     async login({ commit }, { name, password }) {
-      await authApi.login({ name, password })
-      await this.dispatch('fetchUserInfo')
+      try {
+        const response = await authApi.login({ name, password })
+        // Wait for user info to be fetched after successful login
+        await this.dispatch('fetchUserInfo')
+        return response // Return response to handle navigation in component
+      } catch (error) {
+        throw error
+      }
     },
 
     async register({ dispatch }, { name, password }) {
