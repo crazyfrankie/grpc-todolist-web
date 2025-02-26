@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: '/api',
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
   timeout: 5000
 })
 
@@ -23,13 +27,14 @@ export const authApi = {
 }
 
 // 请求拦截器
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+api.interceptors.request.use(
+  config => {
     return config
-  })
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
   
   // 响应拦截器
   api.interceptors.response.use(

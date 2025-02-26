@@ -38,7 +38,7 @@ export default createStore<State>({
     async login({ commit }, { name, password }) {
       try {
         const response = await authApi.login({ name, password })
-        localStorage.setItem('token', response.data.token)
+        document.cookie = `todolist_auth=${response.data.token}; path=/; httpOnly; secure; samesite=strict`
         await this.dispatch('fetchUserInfo')
       } catch (error) {
         throw new Error('登录失败')
