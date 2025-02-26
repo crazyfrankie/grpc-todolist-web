@@ -47,7 +47,7 @@ export default createStore<State>({
     async register({ dispatch }, { name, password }) {
       try {
         await authApi.register({ name, password })
-        await dispatch('register', { name, password })
+        await this.dispatch('fetchUserInfo')
       } catch (error) {
         throw new Error('注册失败')
       }
