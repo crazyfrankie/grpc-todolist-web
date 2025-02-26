@@ -37,10 +37,14 @@ export default createStore<State>({
   actions: {
     async login({ commit }, { name, password }) {
       try {
-        await authApi.login({ name, password })
-        await this.dispatch('fetchUserInfo')
+        const loginResponse = await authApi.login({ name, password })
+        if (loginResponse.data.code === 200) {
+          // 登录成功后立即获取用户信息
+          await this.dispatch('fetchUserInfo')
+          return true
+        }
       } catch (error) {
-        throw new Error('登录失败')
+        throw error
       }
     },
 

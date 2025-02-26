@@ -36,14 +36,13 @@ api.interceptors.request.use(
   }
 )
   
-  // 响应拦截器
-  api.interceptors.response.use(
-    response => response,
-    error => {
-      if (error.response.status === 401) {
-        localStorage.removeItem('token')
-        window.location.href = '/login'
-      }
-      return Promise.reject(error)
+// 响应拦截器
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response.status === 401) {
+      window.location.href = '/login'
     }
-  )
+    return Promise.reject(error)
+  }
+)
