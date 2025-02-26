@@ -10,12 +10,12 @@ const api = axios.create({
 })
 
 export const taskApi = {
-  addTask: (data: {title: string, content: string,user_id: number}) => api.post(`/tasks/add`, data),
-  updateTask: (data: {id: number, title: string, content: string,user_id: number}) => api.post(`/tasks/update`, data),
-  deleteTask: (data: {id: number,user_id: number}) => api.post(`/tasks/delete`, data),
-  restoreTask: (data: {id: number,user_id: number}) => api.post(`/tasks/restore`, data),
-  fetchTasks: (params: {user_id: number}) => api.get(`/tasks/${params.user_id}`),
-  recycleBin: (params: {user_id: number}) => api.get(`/tasks/recycle/${params.user_id}`),
+  addTask: (data: {title: string, content: string}) => api.post(`/tasks/add`, data),
+  updateTask: (data: {id: number, title: string, content: string}) => api.post(`/tasks/update`, data),
+  deleteTask: (data: {id: number}) => api.post(`/tasks/delete`, data),
+  restoreTask: (data: {id: number}) => api.post(`/tasks/restore`, data),
+  fetchTasks: () => api.get(`/tasks`),
+  recycleBin: () => api.get(`/tasks/recycle`),
 }
 
 export const authApi = {
