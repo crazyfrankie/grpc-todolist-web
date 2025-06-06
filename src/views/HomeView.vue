@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import TaskItem from '@/components/TaskItem.vue'
 
 const store = useStore()
+const router = useRouter()
 const isLoggedIn = computed(() => !!store.state.user?.id)
 const showCreateModal = ref(false)
 const newTask = ref({
@@ -12,8 +14,26 @@ const newTask = ref({
 })
 
 onMounted(async () => {
-  if (isLoggedIn.value) {
-    await store.dispatch('fetchTasks')
+  try {
+    console.log('HomeView: 开始获取数据...')
+    
+    // 并行请求用户信息和任务列表
+    await Promise.all([
+      store.dispatch('fetchUserInfo'),
+      store.dispatch('fetchTasks')
+    ])
+    
+    console.log('HomeView: 数据获取成功')
+  } catch (error) {
+    console.error('HomeView: 获取数据失败:', error)
+    
+    // 只有在确实是 401 错误时才让 API 拦截器处理跳转
+    // 其他错误（网络错误、服务器错误等）不应该跳转到登录页面
+    if (error.response?.status === 401) {
+      console.log('HomeView: 检测到 401 错误，用户未登录')
+    } else {
+      console.log('HomeView: 非认证错误，继续停留在当前页面')
+    }
   }
 })
 

@@ -6,8 +6,15 @@ import RestoreItem from '@/components/RestoreTask.vue'
 const store = useStore()
 
 onMounted(async () => {
-  if (store.state.user) {
-    await store.dispatch("fetchRecycledTasks")
+  try {
+    // 并行请求用户信息和回收站任务列表
+    await Promise.all([
+      store.dispatch('fetchUserInfo'),
+      store.dispatch("fetchRecycledTasks")
+    ])
+  } catch (error) {
+    // 如果请求失败，API 拦截器会自动处理 401 错误并跳转到登录页面
+    console.error('获取数据失败:', error)
   }
 })
 

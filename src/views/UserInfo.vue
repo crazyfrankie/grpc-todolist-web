@@ -7,9 +7,11 @@ const userInfo = store.state.user
 
 onMounted(async () => {
   try {
-    await store.dispatch('fetchUser')
+    // 获取用户信息
+    await store.dispatch('fetchUserInfo')
   } catch (error) {
-    console.error('Failed to fetch user info')
+    // 如果请求失败，API 拦截器会自动处理 401 错误并跳转到登录页面
+    console.error('获取用户信息失败:', error)
   }
 })
 </script>
