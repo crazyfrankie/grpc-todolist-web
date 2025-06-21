@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { clearAllCookies } from '@/utils/auth'
 
 const api = axios.create({
   baseURL: '/api',
@@ -23,7 +24,8 @@ export const authApi = {
     api.post('/user/login', data),
   register: (data: { name: string; password: string }) => 
     api.post('/user/register', data),
-  getUserInfo: () => api.get(`/user`)
+  getUserInfo: () => api.get(`/user`),
+  logout: () => api.get('/user/logout')
 }
 
 // 请求拦截器
@@ -36,31 +38,36 @@ api.interceptors.request.use(
   }
 )
 
+// 防止重复跳转的标志
+let isRedirecting = false
+
 // 响应拦截器
 api.interceptors.response.use(
   response => response,
   error => {
-    console.log('API拦截器：收到错误响应', error.response?.status, error.response?.data)
+    console.log('API拦截器:收到错误响应', error.response?.status, error.response?.data)
     
     // 只有在收到明确的401状态码时才处理为认证失败
     if (error.response && error.response.status === 401) {
-      console.log('API拦截器：检测到401错误，清除用户状态并跳转登录页面')
+      console.log('API拦截器:检测到401错误，跳转登录页面')
       
-      // 清除用户状态
-      const store = (window as any).__store__
-      if (store) {
-        store.commit('CLEAR_USER')
+      // 防止重复跳转
+      if (isRedirecting) {
+        console.log('API拦截器：已经在跳转中，忽略此次401错误')
+        return Promise.reject(error)
       }
       
-      // 使用 Vue Router 进行导航，而不是强制刷新页面
-      const router = (window as any).__router__
-      if (router && !window.location.pathname.includes('/login')) {
-        console.log('API拦截器：使用路由跳转到登录页面')
-        router.push('/vue/login')
-      } else if (!router && !window.location.pathname.includes('/login')) {
-        console.log('API拦截器：使用window.location跳转到登录页面')
-        // 如果 router 不可用，回退到 location.href
-        window.location.href = '/vue/login'
+      isRedirecting = true
+      
+      console.log('当前路径:', window.location.pathname)
+      
+      // 直接跳转到登录页面，不清理本地状态
+      if (!window.location.pathname.includes('/login')) {
+        console.log('API拦截器：跳转到登录页面')
+        window.location.href = '/login'
+      } else {
+        console.log('API拦截器：已经在登录页面，不进行跳转')
+        isRedirecting = false
       }
     } else {
       console.log('API拦截器：非401错误，不进行登录跳转')

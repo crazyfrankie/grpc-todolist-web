@@ -26,8 +26,9 @@ const handleRestore = async () => {
     </div>
 
     <div class="task-actions">
-      <button @click="handleRestore" class="action-btn restore-btn">
-        ↩️ 恢复
+      <button @click="handleRestore" class="action-btn restore-btn" title="恢复备忘录">
+        <span class="icon">↩️</span>
+        恢复
       </button>
     </div>
   </div>
@@ -73,19 +74,36 @@ const handleRestore = async () => {
     margin-left: $spacing-md;
     
     .action-btn {
-      background: none;
-      border: none;
-      font-size: 1.1em;
+      background: white;
+      border: 2px solid #e9ecef;
+      font-size: 14px;
       cursor: pointer;
-      padding: $spacing-sm;
+      padding: 12px 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
       
       &:hover {
-        transform: scale(1.1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       &.restore-btn {
-        color: $primary-color;
-        font-weight: bold;
+        color: $success-color;
+        border-color: $success-color;
+        
+        &:hover {
+          background: $success-color;
+          color: white;
+          box-shadow: 0 4px 12px rgba($success-color, 0.3);
+        }
+      }
+
+      .icon {
+        font-size: 16px;
       }
     }
   }

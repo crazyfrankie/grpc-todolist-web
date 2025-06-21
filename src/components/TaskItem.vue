@@ -49,8 +49,12 @@ const deleteTask = async () => {
       <div class="task-header">
         <div class="task-title">{{ task.title }}</div>
         <div class="task-actions">
-          <button @click="isEditing = !isEditing" class="action-btn">✏️</button>
-          <button @click="showDeleteConfirm = true" class="action-btn">🗑️</button>
+          <button @click="isEditing = !isEditing" class="action-btn edit-btn" title="编辑">
+            ✏️
+          </button>
+          <button @click="showDeleteConfirm = true" class="action-btn delete-btn" title="删除">
+            🗑️
+          </button>
         </div>
       </div>
       <div class="task-body">{{ task.content }}</div>
@@ -67,8 +71,14 @@ const deleteTask = async () => {
         <textarea v-model="editedTask.content" class="edit-textarea" placeholder="请输入内容"></textarea>
       </div>
       <div class="edit-actions">
-        <button @click="isEditing = false" class="btn btn-secondary">取消</button>
-        <button @click="saveEdit" class="btn btn-primary">保存</button>
+        <button @click="isEditing = false" class="btn btn-secondary btn-rounded">
+          <span class="icon">❌</span>
+          取消
+        </button>
+        <button @click="saveEdit" class="btn btn-primary btn-rounded">
+          <span class="icon">💾</span>
+          保存修改
+        </button>
       </div>
     </div>
 
@@ -78,8 +88,14 @@ const deleteTask = async () => {
         <h3>确认删除</h3>
         <p>确定要删除这条备忘录吗？</p>
         <div class="modal-actions">
-          <button @click="showDeleteConfirm = false" class="btn btn-secondary">取消</button>
-          <button @click="deleteTask" class="btn btn-danger">删除</button>
+          <button @click="showDeleteConfirm = false" class="btn btn-secondary btn-rounded">
+            <span class="icon">❌</span>
+            取消
+          </button>
+          <button @click="deleteTask" class="btn btn-danger btn-rounded">
+            <span class="icon">🗑️</span>
+            确认删除
+          </button>
         </div>
       </div>
     </div>
@@ -158,17 +174,34 @@ const deleteTask = async () => {
     justify-content: flex-end;
     
     .action-btn {
-      background: none;
-      border: none;
-      font-size: 1.2em;
+      background: white;
+      border: 2px solid #e9ecef;
+      font-size: 16px;
       cursor: pointer;
-      padding: $spacing-sm;
-      border-radius: 50%;
-      transition: all 0.2s ease;
+      padding: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       
       &:hover {
-        background: rgba($primary-color, 0.1);
-        transform: scale(1.1);
+        transform: scale(1.1) translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      &.edit-btn:hover {
+        background: #e3f2fd;
+        border-color: #2196f3;
+        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+      }
+
+      &.delete-btn:hover {
+        background: #ffebee;
+        border-color: #f44336;
+        box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
       }
     }
   }

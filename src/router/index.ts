@@ -7,7 +7,7 @@ import UserInfo from '@/views/UserInfo.vue'
 import RecycleBin from '@/views/RecycleBin.vue'
 
 const router = createRouter({
-  history: createWebHistory('/vue/'),
+  history: createWebHistory(), // 移除 '/vue/'，因为 vue.config.js 已经设置了 publicPath
   routes: [
     { path: '/', component: HomeView, meta: { requiresAuth: true } },
     { path: '/login', component: LoginView, name: 'LoginView', meta: { guestOnly: true } },
@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
 
   // 如果是访客专用页面（登录/注册）且用户已登录，重定向到首页
   if (to.meta.guestOnly && isAuthenticated) {
-    next('/vue/')
+    next('/')
     return
   }
 

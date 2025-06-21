@@ -45,6 +45,11 @@ export default createStore<State>({
       await this.dispatch('fetchUserInfo')
     },
 
+    async logout({ commit }) {
+      // 只调用后端API，让后端清除HttpOnly cookies
+      await authApi.logout()
+    },
+
     async fetchUserInfo({ commit, state }) {
       try {
           const response = await authApi.getUserInfo()

@@ -29,8 +29,11 @@ const handleRestore = async (taskId: number) => {
 <template>
   <div class="recycle-bin-view">
     <header class="app-header">
-      <h2>回收站</h2>
-      <button @click="$router.push('/')" class="btn btn-primary">返回首页</button>
+      <h2>🗑️ 回收站</h2>
+      <button @click="$router.push('/')" class="btn btn-primary btn-rounded">
+        <span class="icon">🏠</span>
+        返回首页
+      </button>
     </header>
 
     <div class="task-list">
